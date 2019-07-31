@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+
+  api:
+    container_name: python-api
+    image: python-api
+#    image: huyqluong/ml:python-api
+    restart: always
+    ports:
+      - 7777:7777
+    working_dir: /app
+#    networks:
+#      - py-network
+
+  web:
+    container_name: python-web
+    image: python-web
+#    image: huyqluong/ml:python-web
+    restart: always
+    ports:
+      - 5000:5000
+    depends_on:
+      - api
+#    networks:
+#      - py-network
+
+#networks:
+#  py-network: {}
