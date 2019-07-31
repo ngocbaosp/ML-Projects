@@ -29,7 +29,7 @@ def home():
 def predict():
     print(json.loads(request.args['message']))
     data = json.loads(request.args['message'])
-    info = requests.get('http://localhost:7777/project1/api/v1.0/predict', params=data)
+    info = requests.get('http://python-api:7777/project1/api/v1.0/predict', params=data)
     print(info.url)
     info = unicodedata.normalize('NFKD', info.text).encode('ascii','ignore')
     info = json.loads(info)
