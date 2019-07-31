@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h3>Predict Result</h3>
+    <div class="media content-section">
+        <div class="media-body">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <p class="text-secondary">Genre: {{ info['genre'] }}</p>
+                    <p class="text-secondary">Type: {{ info['type'] }}</p>
+                    <p class="text-secondary">Number of episodes: {{ info['episode'] }}</p>
+                    <p class="text-secondary">Number of members: {{ info['members'] }}</p>
+                </div>
+                <div class="col-md-4">
+                    {% if info['rating'] == 'High rating' %}
+                    <div class="bg-success text-white">
+                        <p class="text-center font-weight-bolder text-uppercase">{{ info['rating'] }}</p>
+                    </div>
+                    {% else %}
+                    <div class="bg-danger text-white">
+                        <p class="text-center font-weight-bolder text-uppercase">{{ info['rating'] }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}

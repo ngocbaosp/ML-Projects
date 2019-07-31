@@ -4,6 +4,7 @@ from flask import Flask
 # Get request parameters
 from flask import request
 # This is needed for logistic regression
+# from sklearn.ensemble import RandomForestClassifier
 from sklearn import linear_model
 # Save and load models to/from disk
 import pickle
@@ -11,7 +12,7 @@ import pickle
 # Output is the probability that the given
 # input (ex. email) belongs to a certain
 # class (ex. spam or not)
-logReg = linear_model.LogisticRegression()
+clf = linear_model.LogisticRegression()
 
 # Samples (your features, they should be normalized
 # and standardized). Normalization scales the values
@@ -19,40 +20,51 @@ logReg = linear_model.LogisticRegression()
 # to have a mean of 0 and standard deviation of 1
 # Note that we are using fake data here just to
 # demonstrate the concept
-X = [[1.0,1.0,2.1], [2.0,2.2,3.3], [3.0,1.1,3.0]]
+X = [[1.0, 1.0, 2.1], [2.0, 2.2, 3.3], [3.0, 1.1, 3.0]]
 
 # Labeled data (Spam or not)
-Y = [1,0,1]
+Y = [1, 0, 1]
 
 # Build the model
-logReg.fit(X, Y)
+clf.fit(X, Y)
 
 # Save it to disk
-pickle.dump(logReg, open('logReg.pkl', 'wb'))
+pickle.dump(clf, open('randomForestClassifier.pkl', 'wb'))
 
 # API server
 app = Flask(__name__)
 
+
 # Define end point
-@app.route('/demo/api/v1.0/predict', methods=['GET'])
+@app.route('/project1/api/v1.0/predict', methods=['GET'])
 def get_prediction():
+    # We are using 3 features. For example:
+    # subject line, word frequency, etc
+    print("params ", request.args)
+    genre = request.args.get('genre')
+    mtype = request.args.get('type')
+    episode = int(request.args.get('episode'))
+    members = int(request.args.get('members'))
 
-	# We are using 3 features. For example:
-	# subject line, word frequency, etc
-	param1 = float(request.args.get('p1'))
-	param2 = float(request.args.get('p2'))
-	param3 = float(request.args.get('p3'))
+    # Load model from disk
+    # model = pickle.load(open('randomForestClassifier.pkl', 'rb'))
 
-	# Load model from disk
-	logReg = pickle.load(open('logReg.pkl', 'rb'))
+    # Predict
+    # pred = model.predict([[genre, mtype, episode, members]])[0]
+    pred = 0
+    result = {
+        'genre': genre,
+        'type': mtype,
+        'episode': episode,
+        'members': members
+    }
+    if pred == 0:
+        result['rating'] = "Low rating"
+    else:
+        result['rating'] = "High rating"
+    return result
 
-	# Predict
-	pred = logReg.predict([[param1, param2, param3]])[0]
-	if pred == 0:
-		return "Email is spam"
-	else:
-		return "Email is valid"
 
 # Main app
 if __name__ == '__main__':
-	app.run(port=7777,host='0.0.0.0')
+    app.run(port=7777, host='0.0.0.0', debug=True)
