@@ -1,5 +1,5 @@
 # Multi-dimensional arrays and more
-numpy==1.17.0
+numpy==1.22.0
 # Scientific computing and more
 scipy==1.2.2
 # Data manipulation and analysis
