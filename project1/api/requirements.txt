@@ -7,4 +7,4 @@ pandas==0.25.0
 # Machine learning library
 scikit_learn==0.21.3
 # Micro web framework
-Flask==1.1.1
+Flask==2.3.2
